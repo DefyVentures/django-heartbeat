@@ -11,7 +11,7 @@ for nic, addrs in psutil.net_if_addrs().items():
             ips.append(addr.address)
 
 
-def check(request):
+def host(request):
     return {
             'hostname': socket.gethostname(),
             'ips': ips,

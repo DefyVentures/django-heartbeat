@@ -2,7 +2,7 @@ from collections import OrderedDict
 from django.db import connections, OperationalError
 
 
-def check(request):
+def databases(request):
     databases_info = []
     for db in connections:
         databases_info.append(get_connection_info(connections[db]))

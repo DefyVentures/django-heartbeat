@@ -1,6 +1,5 @@
 
-import import_string
-import types
+from django.utils.module_loading import import_string
 
 from .settings import HEARTBEAT
 
@@ -25,13 +24,8 @@ def get_check(check_fn, request):
             'data': data
         }
     """
-    data = None
-    if isinstance(check_fn, types.ModuleType):
-        # handles default checkers provided by heartbeat
-        data = check_fn.check(request)
-    else:
-        data = check_fn(request)
 
+    data = check_fn(request)
     subchecks = []
     try:
         subchecks = data.get('checks', [])

@@ -7,7 +7,7 @@ except ImportError:
     from django.core.cache import get_cache as caches
 
 
-def check(request):
+def memcached_status(request):
     all_stats = []
     for alias in settings.CACHES:
         server_stats = []
