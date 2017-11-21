@@ -1,5 +1,6 @@
 
-from importlib import import_module
+import import_string
+import types
 
 from .settings import HEARTBEAT
 
@@ -9,13 +10,13 @@ def get_checks(request):
     """
     result = {}
     for check in HEARTBEAT['checkers']:
-        checker_module = import_module(check)
-        checker_name = checker_module.__name__.split('.')[-1]
-        data = get_check(checker_module, request)
+        check_fn = import_string(check)
+        checker_name = check_fn.__name__.split('.')[-1]
+        data = get_check(check_fn, request)
         result.update({checker_name: data})
     return result
 
-def get_check(checker_module, request):
+def get_check(check_fn, request):
     """ Get checks for checker, pass/fail and data in JSON
     Returns:
         {
@@ -24,9 +25,14 @@ def get_check(checker_module, request):
             'data': data
         }
     """
-    data = checker_module.check(request)
-    subchecks = []
+    data = None
+    if isinstance(check_fn, types.ModuleType):
+        # handles default checkers provided by heartbeat
+        data = check_fn.check(request)
+    else:
+        data = check_fn(request)
 
+    subchecks = []
     try:
         subchecks = data.get('checks', [])
     except AttributeError:
