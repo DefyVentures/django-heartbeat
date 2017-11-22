@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Defy Ventures Status</title>
+  <style>
+    .container {
+      width: 50%;
+    }
+
+    .two-col {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .pass {
+      background-color: lime;
+      padding: 5px;
+    }
+
+    .fail {
+      background-color: red;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <h1>LCMS Status</h1>
+    <hr>
+    <div class='two-col'>
+      <div>The LCMS is up and running</div>
+      <div>
+        <span class='pass'>Pass</span>
+      </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+    <hr>
+  </div>
+</body>
+</html>

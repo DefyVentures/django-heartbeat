@@ -1,7 +1,7 @@
 import sys
 
 
-def check(request):
+def python(request):
     return {
             'version': '{major}.{minor}.{micro}'.format(
                 major=sys.version_info.major,

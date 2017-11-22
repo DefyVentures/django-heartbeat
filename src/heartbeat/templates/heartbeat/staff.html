@@ -1,0 +1,17 @@
+{% extends 'heartbeat/base.html' %}
+
+{% block content %}
+  {% for key, value in result.items %}
+  <hr>
+  <div class='two-col'>
+    <div>{{ key|capfirst }}</div>
+    <div>
+      {% if value.pass %}
+        <span class='pass'>Pass</span>
+      {% else %}
+        <span class='fail'>Fail</span>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}
