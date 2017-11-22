@@ -1,4 +1,6 @@
 
+import json
+
 from django.utils.module_loading import import_string
 
 from .settings import HEARTBEAT
@@ -11,6 +13,7 @@ def get_checks(request):
     for check in HEARTBEAT['checkers']:
         check_fn = import_string(check)
         checker_name = check_fn.__name__.split('.')[-1]
+        checker_name = checker_name.replace('_', ' ')  # replace underscore
         data = get_check(check_fn, request)
         result.update({checker_name: data})
     return result
@@ -36,5 +39,5 @@ def get_check(check_fn, request):
     return {
         'checks': subchecks,
         'pass': _pass,
-        'data': data,
+        'data': json.dumps(data, indent=2),
     }

@@ -15,9 +15,7 @@
         {% endfor %}
         </ul>
       {% else %}
-        <code>
-          {{ value.data }}
-        </code>
+        <pre><code class='json_obj'>{{ value.data }}</code></pre>
       {% endif %}
     </div>
     <div>
