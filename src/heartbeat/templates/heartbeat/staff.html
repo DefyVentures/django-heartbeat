@@ -1,11 +1,23 @@
-{% extends 'heartbeat/base.html' %}
+{% extends 'dashboard.html' %}
 
-{% block content %}
+{% block frame %}
+  <h1>LCMS Status</h1>
+  <div class='row bottom-sm'>
+    <div class='col-md-4'>
+      <div>The LCMS is up and running</div>
+    </div>
+    <div class='col-md-8'>
+      <span class='pass'>Pass</span>
+    </div>
+  </div>
+
   {% for key, value in result.items %}
-  <hr>
-  <div class='two-col'>
-    <div>{{ key|capfirst }}</div>
-    <div>
+  <div class='row bottom-md'>
+    <div class='col-md-4'>
+      <div>{{ key|capfirst }}</div>
+    </div>
+
+    <div class='col-md-6'>
       {% if value.pass %}
         <span class='pass'>Pass</span>
       {% else %}

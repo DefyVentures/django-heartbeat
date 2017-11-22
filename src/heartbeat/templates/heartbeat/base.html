@@ -42,18 +42,5 @@
     {% endblock %}
     <hr>
   </div>
-
-  <script>
-    // grab all instance of code, and replace the inner text with pretty json
-    var json_snippets = document.getElementsByClassName('json_obj');
-    for(var i=0; i<json_snippets.length; i++){
-      var json_str, json_obj;
-      json_str = json_snippets[i].innerText;
-      json_obj = JSON.parse(json_str);
-
-      // do conversion
-      json_snippets[i].innerText = JSON.stringify(json_obj, null, 2);
-    }
-  </script>
 </body>
 </html>
