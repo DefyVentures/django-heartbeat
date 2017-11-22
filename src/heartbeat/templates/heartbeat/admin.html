@@ -14,7 +14,12 @@
   {% for key, value in result.items %}
     <div class='row bottom-md'>
       <div class='col-md-4'>
-        <div>{{ key|capfirst }}</div>
+        <div>
+          <a role='button' data-toggle='collapse' href='#collapseStatus{{ forloop.counter }}'
+             aria-expanded='false' aria-controls='collapseStatusJson{{ forloop.counter }}'>
+            {{ key|capfirst }}
+          </a>
+        </div>
       </div>
 
       <div class='col-md-8'>
@@ -26,12 +31,12 @@
       </div>
     </div>
 
-    <div class='row bottom-md'>
+    <div class='row bottom-md collapse' id='collapseStatus{{ forloop.counter }}'>
       <div class='col-md-5'>
       {% if value.checks %}
-        <ul>
+        <ul class='list-group'>
         {% for check in value.checks %}
-          <li><strong>{{ check.label }}</strong> | {{ check.pass }}</li>
+          <li class='list-group-item'><strong>{{ check.label }}</strong> | {{ check.pass }}</li>
         {% endfor %}
         </ul>
       {% else %}
