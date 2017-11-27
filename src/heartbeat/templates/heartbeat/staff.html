@@ -2,12 +2,17 @@
 
 {% block frame %}
   <h1>LCMS Status</h1>
-  <div class='row bottom-sm'>
+
+  <div class='row bottom-md'>
     <div class='col-md-4'>
-      <div>The LCMS is up and running</div>
+      <div>{{ status.label }}</div>
     </div>
     <div class='col-md-8'>
-      <span class='pass'>Pass</span>
+      {% if status.pass %}
+        <span class='pass-check'>Pass</span>
+      {% else %}
+        <span class='fail-check'>Fail</span>
+      {% endif %}
     </div>
   </div>
 
@@ -17,11 +22,11 @@
       <div>{{ key|capfirst }}</div>
     </div>
 
-    <div class='col-md-6'>
+    <div class='col-md-8'>
       {% if value.pass %}
-        <span class='pass'>Pass</span>
+        <span class='pass-check'>Pass</span>
       {% else %}
-        <span class='fail'>Fail</span>
+        <span class='fail-check'>Fail</span>
       {% endif %}
     </div>
   </div>

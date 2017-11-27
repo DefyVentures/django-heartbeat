@@ -20,7 +20,21 @@ class StatusMixin:
     def get_context_data(self):
         ctx = super().get_context_data()
         result = get_checks(self.request)
-        ctx.update({'result': result})
+
+        checks_passed = 0
+        for check, check_dict in result.items():
+            if check_dict['pass'] == True:
+                checks_passed += 1
+        lcms_pass = True if checks_passed == len(result) else False
+        lcms_status = {
+            'label': 'The LCMS is up and running.',
+            'pass': lcms_pass
+        }
+
+        ctx.update({
+            'result': result,
+            'status': lcms_status
+        })
         return ctx
 
 
