@@ -1,0 +1,62 @@
+{% extends base_template %}
+
+{% block frame %}
+  <h1>LCMS Status</h1>
+
+  <div class='row bottom-md'>
+    <div class='col-md-4'>
+      <div>{{ status.label }}</div>
+    </div>
+    <div class='col-md-8'>
+      {% if status.pass %}
+        <span class='label label-success'>Pass</span>
+      {% else %}
+        <span class='label label-danger'>Fail</span>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if perms.accounts.is_staff %}
+    {% for key, value in result.items %}
+      <div class='row bottom-md'>
+        <div class='col-md-4'>
+          <div>
+            {% if request.user.is_superuser %}
+            <a role='button' data-toggle='collapse' href='#collapseStatus{{ forloop.counter }}'
+               aria-expanded='false' aria-controls='collapseStatusJson{{ forloop.counter }}'>
+              {{ key|capfirst }}
+            </a>
+            {% else %}
+              {{ key|capfirst }}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class='col-md-8'>
+          {% if value.pass %}
+            <span class='label label-success'>Pass</span>
+          {% else %}
+            <span class='label label-danger'>Fail</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if request.user.is_superuser %}
+      <div class='row bottom-md collapse' id='collapseStatus{{ forloop.counter }}'>
+        <div class='col-md-5'>
+        {% if value.checks %}
+          <ul class='list-group'>
+          {% for check in value.checks %}
+            <li class='list-group-item'><strong>{{ check.label }}</strong> | {{ check.pass }}</li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <pre><code>{{ value.data }}</code></pre>
+        {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+    {% endfor %}
+  {% endif %}
+{% endblock %}

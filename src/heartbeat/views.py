@@ -5,32 +5,31 @@ from django.views import generic
 from .util import get_checks
 
 
-def index(request):
-    # public | staff | superuser
-    logged_in = request.user.is_authenticated()
-    if logged_in and request.user.is_superuser:
-        return AdminView.as_view()(request)
-    elif logged_in and request.user.has_perm('accounts.is_staff'):
-        return StaffView.as_view()(request)
-    else:
-        return PublicView.as_view()(request)
+class StatusView(generic.TemplateView):
+    template_name = 'heartbeat/status.html'
 
-
-class StatusMixin:
     def get_context_data(self):
         ctx = super().get_context_data()
         result = get_checks(self.request)
-        ctx.update({'result': result})
+
+        # check that everything is passing
+        checks_passed = 0
+        for check, check_dict in result.items():
+            if check_dict['pass'] == True:
+                checks_passed += 1
+        lcms_pass = True if checks_passed == len(result) else False
+        lcms_status = {
+            'label': 'The LCMS is up and running.',
+            'pass': lcms_pass
+        }
+
+        base_template = 'base.html'
+        if self.request.user.is_authenticated():
+            base_template = 'dashboard.html'
+
+        ctx.update({
+            'result': result,
+            'status': lcms_status,
+            'base_template': base_template
+        })
         return ctx
-
-
-class PublicView(generic.TemplateView):
-    template_name = 'heartbeat/public.html'
-
-
-class StaffView(StatusMixin, generic.TemplateView):
-    template_name = 'heartbeat/staff.html'
-
-
-class AdminView(StatusMixin, generic.TemplateView):
-    template_name = 'heartbeat/admin.html'
