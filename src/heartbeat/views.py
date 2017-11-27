@@ -23,13 +23,8 @@ class StatusView(generic.TemplateView):
             'pass': lcms_pass
         }
 
-        base_template = 'base.html'
-        if self.request.user.is_authenticated():
-            base_template = 'dashboard.html'
-
         ctx.update({
             'result': result,
             'status': lcms_status,
-            'base_template': base_template
         })
         return ctx
