@@ -41,3 +41,22 @@ def get_check(check_fn, request):
         'pass': _pass,
         'data': json.dumps(data, indent=2),
     }
+
+def get_status(request):
+    result = get_checks(request)
+
+    # check that everything is passing
+    checks_passed = 0
+    for check, check_dict in result.items():
+        if check_dict['pass'] == True:
+            checks_passed += 1
+    lcms_pass = True if checks_passed == len(result) else False
+    lcms_status = {
+        'label': 'The LCMS is up and running.',
+        'pass': lcms_pass
+    }
+
+    return {
+        'result': result,
+        'status': lcms_status,
+    }

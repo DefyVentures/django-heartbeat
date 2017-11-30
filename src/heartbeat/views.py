@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.views import generic
 
-from .util import get_checks
+from heartbeat.util import get_status
 
 
 class StatusView(generic.TemplateView):
@@ -10,21 +10,6 @@ class StatusView(generic.TemplateView):
 
     def get_context_data(self):
         ctx = super().get_context_data()
-        result = get_checks(self.request)
-
-        # check that everything is passing
-        checks_passed = 0
-        for check, check_dict in result.items():
-            if check_dict['pass'] == True:
-                checks_passed += 1
-        lcms_pass = True if checks_passed == len(result) else False
-        lcms_status = {
-            'label': 'The LCMS is up and running.',
-            'pass': lcms_pass
-        }
-
-        ctx.update({
-            'result': result,
-            'status': lcms_status,
-        })
+        status = get_status(self.request)
+        ctx.update(status)
         return ctx
