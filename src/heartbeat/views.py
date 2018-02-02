@@ -1,5 +1,3 @@
-
-from django.http import HttpResponse
 from django.views import generic
 
 from heartbeat.util import get_status
@@ -9,7 +7,14 @@ class StatusView(generic.TemplateView):
     template_name = 'heartbeat/status.html'
 
     def get_context_data(self):
-        ctx = super().get_context_data()
+        context = super().get_context_data()
         status = get_status(self.request)
-        ctx.update(status)
-        return ctx
+        context.update(status)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        status = 200
+        if context['status']['pass'] is not True:
+            status = 500
+        return self.render_to_response(context, status=status)
